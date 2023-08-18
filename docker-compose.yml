@@ -1,0 +1,173 @@
+# Specifies the version of the docker-compose specification being used.
+version: '3'
+
+# The 'services' block is where you define each containerized application and its settings.
+services:
+# Configuration details for the 'db1:' service.
+  db1:
+# Specifies the Docker image to be used.
+    image: percona/percona-xtradb-cluster:5.7
+# Environment variables for the service.
+    environment:
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_USER=${MYSQL_USER}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      - CLUSTER_NAME=${CLUSTER_NAME}
+# Placeholder value indicating the use of an environment variable.
+      - XTRABACKUP_PASSWORD=${XTRABACKUP_PASSWORD}
+    command: --bootstrap
+
+  db2:
+# Specifies the Docker image to be used.
+    image: percona/percona-xtradb-cluster:5.7
+# Environment variables for the service.
+    environment:
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_USER=${MYSQL_USER}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      - CLUSTER_NAME=${CLUSTER_NAME}
+# Placeholder value indicating the use of an environment variable.
+      - XTRABACKUP_PASSWORD=${XTRABACKUP_PASSWORD}
+# Services that this service depends on.
+    depends_on:
+      - db1
+
+  db3:
+# Specifies the Docker image to be used.
+    image: percona/percona-xtradb-cluster:5.7
+# Environment variables for the service.
+    environment:
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_USER=${MYSQL_USER}
+# Placeholder value indicating the use of an environment variable.
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      - CLUSTER_NAME=${CLUSTER_NAME}
+# Placeholder value indicating the use of an environment variable.
+      - XTRABACKUP_PASSWORD=${XTRABACKUP_PASSWORD}
+# Services that this service depends on.
+    depends_on:
+      - db1
+
+# Configuration details for the 'wordpress1:' service.
+  wordpress1:
+# Services that this service depends on.
+    depends_on:
+      - db1
+      - db2
+      - db3
+# Specifies the Docker image to be used.
+    image: wordpress:latest
+# Environment variables for the service.
+    environment:
+      WORDPRESS_DB_HOST: db1:3306
+# Placeholder value indicating the use of an environment variable.
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+# Placeholder value indicating the use of an environment variable.
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+# The 'volumes' block defines persistent storage volumes.
+    volumes:
+      - wordpress_files:/var/www/html
+
+  wordpress2:
+# Services that this service depends on.
+    depends_on:
+      - db1
+      - db2
+      - db3
+# Specifies the Docker image to be used.
+    image: wordpress:latest
+# Environment variables for the service.
+    environment:
+      WORDPRESS_DB_HOST: db1:3306
+# Placeholder value indicating the use of an environment variable.
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+# Placeholder value indicating the use of an environment variable.
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+# Placeholder value indicating the use of an environment variable.
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+# The 'volumes' block defines persistent storage volumes.
+    volumes:
+      - wordpress_files:/var/www/html
+
+# Configuration details for the 'haproxy:' service.
+  haproxy:
+# Specifies the Docker image to be used.
+    image: haproxy:1.8
+# The 'volumes' block defines persistent storage volumes.
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./certs:/usr/local/etc/haproxy/certs
+# Ports to be exposed from the container to the host.
+    ports:
+      - "80:80"
+      - "443:443"
+# Services that this service depends on.
+    depends_on:
+      - wordpress1
+      - wordpress2
+
+  certbot:
+# Specifies the Docker image to be used.
+    image: certbot/certbot
+# The 'volumes' block defines persistent storage volumes.
+    volumes:
+      - ./certs:/etc/letsencrypt
+    command: certonly --standalone -d wordpress-mo.senecops.com --email your_email@example.com --agree-tos --no-eff-email
+
+  keepalived1:
+# Specifies the Docker image to be used.
+    image: osixia/keepalived:2.0.20
+    network_mode: "host"
+# Environment variables for the service.
+    environment:
+      - KEEPALIVED_VIRTUAL_IPS=#your_virtual_ip
+      - KEEPALIVED_UNICAST_PEERS=#IP_of_haproxy1,#IP_of_haproxy2
+# The 'volumes' block defines persistent storage volumes.
+    volumes:
+      - /lib/modules:/lib/modules
+# Services that this service depends on.
+    depends_on:
+      - haproxy
+
+  keepalived2:
+# Specifies the Docker image to be used.
+    image: osixia/keepalived:2.0.20
+    network_mode: "host"
+# Environment variables for the service.
+    environment:
+      - KEEPALIVED_VIRTUAL_IPS=#your_virtual_ip
+      - KEEPALIVED_UNICAST_PEERS=#IP_of_haproxy1,#IP_of_haproxy2
+# The 'volumes' block defines persistent storage volumes.
+    volumes:
+      - /lib/modules:/lib/modules
+# Services that this service depends on.
+    depends_on:
+      - haproxy
+
+# The 'volumes' block defines persistent storage volumes.
+volumes:
+  wordpress_files:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=YOUR_NFS_SERVER_IP,nolock,soft,rw"
+      device: ":YOUR_PATH_TO_NFS_SHARE_ON_SERVER"
