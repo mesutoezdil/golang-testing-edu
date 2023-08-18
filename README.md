@@ -46,12 +46,12 @@ Terraform is a powerful Infrastructure as Code (IaC) tool. The `main.tf` file in
 - **null_resource (drbd_setup)**: 
   - **Purpose**: Placeholder or pseudo-code for setting up DRBD (Distributed Replicated Block Device). DRBD is a distributed storage system used for mirroring block devices between multiple hosts.
 
-# Conclusion:
+### Conclusion:
 The `main.tf` file provides a comprehensive blueprint for the infrastructure setup. It ensures that the required servers are provisioned with the necessary software and configurations. When executed, Terraform will use this file to create and configure the servers on Hetzner Cloud, preparing them for the application's deployment.
 
 It's essential to ensure that the placeholders in the configuration (like `YOUR_NFS_SERVER_IP`) are replaced with actual values before executing the Terraform plan.
 
-## Detailed Overview of Docker Compose (`docker-compose.yml`)
+# Detailed Overview of Docker Compose (`docker-compose.yml`)
 
 ### General Information:
 Docker Compose is a tool for defining and running multi-container Docker applications. The `docker-compose.yml` file defines how services are built, which ports they listen to, which environment variables they use, and dependencies between containers.
@@ -83,27 +83,27 @@ Docker Compose is a tool for defining and running multi-container Docker applica
   - Used to manage the VIP (Virtual IP) address.
   - Dependent on the `haproxy` service.
 
-# Conclusion:
+### Conclusion:
 This `docker-compose.yml` file defines the necessary infrastructure to run a WordPress application with high availability. The application and its dependencies run as Docker containers as defined in this file.
 
-### In-depth Overview of Project Configuration Files
+# In-depth Overview of Project Configuration Files
 
 ### 1. `haproxy.cfg` - HAProxy Configuration File:
 
-#### Global Settings:
+### Global Settings:
 - **global**: Contains settings that apply globally to the HAProxy process.
   - **log**: Defines logging directives.
 
-#### Default Settings:
+### Default Settings:
 - **defaults**: Default settings affecting all frontend and backend sections.
   - **log, mode, timeout**: Logging, operational mode, and timeout settings.
 
-#### Frontend Settings:
+### Frontend Settings:
 - **frontend**: Defines where HAProxy listens for incoming traffic.
   - **bind**: IP addresses and ports for HAProxy to listen.
   - **default_backend**: Backend section for traffic forwarding.
 
-#### Backend Settings:
+### Backend Settings:
 - **backend**: Where HAProxy sends incoming traffic.
   - **balance**: Load balancing algorithm.
   - **server**: Backend servers for traffic forwarding.
