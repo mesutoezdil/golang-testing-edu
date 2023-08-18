@@ -1,12 +1,12 @@
-**In-depth Overview of Terraform Configuration (`main.tf`):**
+***In-depth Overview of Terraform Configuration (`main.tf`):**
    - Terraform is a powerful Infrastructure as Code (IaC) tool.
    - The `main.tf` file is used to provision virtual server instances on Hetzner Cloud.
 
-**Detailed Overview of Docker Compose (`docker-compose.yml`):**
+***Detailed Overview of Docker Compose (`docker-compose.yml`):**
    - Docker Compose is a tool for defining and running multi-container Docker applications.
    - Services like `db1, db2, db3` represent the Percona XtraDB Cluster and are configured using environment variables.
 
-**In-depth Overview of Project Configuration Files:**
+***In-depth Overview of Project Configuration Files:**
    - `haproxy.cfg`: Contains general, default, frontend, and backend configurations for HAProxy.
    - `terraform.tfvars`: Contains variable definitions for the Terraform configuration.
    - `haproxy.pem`: An SSL/TLS certificate file used by HAProxy for encrypted connections.
@@ -14,7 +14,7 @@
 Note: For security reasons, sensitive data such as API tokens, SSH keys, or certificates should never be publicly shared. Ensure they are securely stored.
 
 
-## In-depth Overview of Terraform Configuration (`main.tf`)
+# In-depth Overview of Terraform Configuration (`main.tf`)
 
 ### Introduction:
 Terraform is a powerful Infrastructure as Code (IaC) tool. The `main.tf` file in this project defines and configures the infrastructure components required for the deployment of the application.
@@ -46,7 +46,7 @@ Terraform is a powerful Infrastructure as Code (IaC) tool. The `main.tf` file in
 - **null_resource (drbd_setup)**: 
   - **Purpose**: Placeholder or pseudo-code for setting up DRBD (Distributed Replicated Block Device). DRBD is a distributed storage system used for mirroring block devices between multiple hosts.
 
-### Conclusion:
+# Conclusion:
 The `main.tf` file provides a comprehensive blueprint for the infrastructure setup. It ensures that the required servers are provisioned with the necessary software and configurations. When executed, Terraform will use this file to create and configure the servers on Hetzner Cloud, preparing them for the application's deployment.
 
 It's essential to ensure that the placeholders in the configuration (like `YOUR_NFS_SERVER_IP`) are replaced with actual values before executing the Terraform plan.
