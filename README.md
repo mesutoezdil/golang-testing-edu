@@ -31,3 +31,34 @@ reporting test failures
  t.Fatal(...interface{})
  t.Fatalf(string, interface{})
 
+WHY ARE ASSERTIONS MISSING
+
+1- reduce learning curve
+------------------------
+func TechThing(t *testing.T) {
+  l, r := 2, 4
+  expect := 6
+
+  got := l + r
+
+  if got != expect {
+    // report failure
+  } 
+ }
+
+Checking for test failures uses same constructs as production code. If you can write production code, you can write tests.
+
+
+2- focus on common concerns
+-----------------------------
+func TechThing(t *testing.T) {
+  l, r := 2, 4
+  expect := 6
+
+  got := l + r
+
+  assert.Equal(got, expect)         // assertion style
+  Expect(expect).To(Equal(got))     // expect style
+ }
+Both styles are equally valid and subject to team preference
+
