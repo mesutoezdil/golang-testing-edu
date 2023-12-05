@@ -1,4 +1,4 @@
-package user
+package user //component level test
 
 import "testing"
 
