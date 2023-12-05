@@ -23,11 +23,11 @@ communicate with test runner
 
 reporting test failures
 1- non-immediate failures
-# t.Fail()
-# t.Error(...interface{})
-# t.Errorf(string, ...interface{})
+ t.Fail()
+ t.Error(...interface{})
+ t.Errorf(string, ...interface{})
 2- immediate failures
-# t.FailNow{}
-# t.Fatal(...interface{})
-# t.Fatalf(string, interface{})
+ t.FailNow{}
+ t.Fatal(...interface{})
+ t.Fatalf(string, interface{})
 
