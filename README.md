@@ -82,3 +82,7 @@ go test -coverprofile cover.out       set cover mode
                                       set - is statement executed
                                       count - execution count
                                       atomic - execution count (threadsafe)
+
+How to use code coverage reports:
+- do use code coverage to find missed/uncovered code
+- do not use code coverage as an indicator of how good tests are
