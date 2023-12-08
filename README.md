@@ -62,3 +62,23 @@ func TechThing(t *testing.T) {
  }
 Both styles are equally valid and subject to team preference
 
+WHITE VS BLACK BOX TESTS
+------------------------
+w test has access to all tested code
+w tests in same package as production code
+b test can only interact via public api
+b tests in separate package
+
+
+
+go test -cover                        run tests with basic coverage stats
+
+go test -coverprofile cover.out       generate coverage report to cover.out
+
+go tool cover                         analyse coverage report
+
+go test -coverprofile cover.out       set cover mode
+  -covermode count
+                                      set - is statement executed
+                                      count - execution count
+                                      atomic - execution count (threadsafe)
