@@ -129,3 +129,27 @@ func FuzzFoo(f *testing.F) {                 Prefix test with "Fuzz"
 go test -fuzz regexp                          Run fuzz tests matching regular expression
                                               Failed tests stored in
                                               ./testdata/fuzz/{FuzzTestName}
+go test -fuzz regexp -fuzztime 30s            Set the max test time (default:infinite)
+go test -fuzz regexp -fuzzminizetime 30s      Set the max failure optimization time(default: 60s)
+
+
+
+TESTING CODE SAMPLES
+----------------------------
+func ExampleFoo() {                           Example test signature
+  fmt.Println("Hello,")
+  fmt.Println("World")
+  // output:                                  Start describing expected output to stdout
+  // Hello,
+  // World
+}
+
+func Example{FunctionName}                     Example for function
+func Example{TypeName}                         Example for type
+func Example{Type + Method}                    Example for type's method
+func Example{*}_suffix                         Description of example test
+
+godoc                                          golang.org/x/tools/cmd/godoc
+
+TESTING HTTPS SERVICES
+---------------------------------
