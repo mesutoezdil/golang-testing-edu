@@ -86,3 +86,46 @@ go test -coverprofile cover.out       set cover mode
 How to use code coverage reports:
 - do use code coverage to find missed/uncovered code
 - do not use code coverage as an indicator of how good tests are
+
+Benchmarking Tests
+--------------------
+Tests are used to confirm the correctness of the application. Benchmarks are used to determine how performant the app is. 
+
+func BenchmarkFoo(b *testing.B) {             Benchmark test signature
+        //setup code
+        b.ResetTimer()                        Reset benchmark timer
+        for i := 0; i < b.N; i++ {
+          ...
+        }
+        b.StopTimer                           Stop benchmark timer
+        //tear down code
+}      
+
+go test -bench .                              Include benchmark tests in test run
+
+go test -bench . -benchmem                    Include memory allocations in results
+
+go test -bench . -benchtime 1m                Tune b.N to run tests for approx. 1 minute
+
+
+FUZZING
+In programming and software development, fuzzing or fuzz testing is an automated software testing technique that involves providing invalid, unexpected, or random data as inputs to a computer program.
+
+func FuzzFoo(f *testing.F) {                 Prefix test with "Fuzz"
+  f.Add(...args)                             Add arguments in order they should be passed to fuzz test
+
+                                             - string, []byte
+                                             - int, int8, int16, int32, int64
+                                             - uint, uint8, uint32, uint64
+                                             - float32, float64
+                                             - bool
+  
+  f.Fuzz(func(t *testing.T, ...args) {        One and only one f.Fuzz per test
+    // arrange                                Tests run in parallel - do not test shared memory!
+    // act                                    Arguments controlled made against arguments
+    // assert                                 Assertions typically made against arguments
+  })
+}
+go test -fuzz regexp                          Run fuzz tests matching regular expression
+                                              Failed tests stored in
+                                              ./testdata/fuzz/{FuzzTestName}
